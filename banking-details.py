@@ -16,7 +16,6 @@ bank_lbl = Label(root, text="Bank: ", bg="yellow").place(x=30, y=230)
 options = ["Select..", "Capitec", "Nedbank", "FNB", "ABSA"]
 variable = StringVar(root)
 variable.set(options[0])
-gender_menu = OptionMenu(root, variable, *options).place(x=200, y=225, width=90, height=25)
-
+bank_menu = OptionMenu(root, variable, *options).place(x=200, y=225, width=90, height=25)
 
 root.mainloop()

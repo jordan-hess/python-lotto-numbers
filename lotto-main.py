@@ -13,7 +13,6 @@ Label(root, image=img, bg="yellow", height="300").place(x=-130, y=-150)
 # header
 head_lbl = Label(root, text="Welcome!", font="bold", bg="yellow").place(x=450, y=40)
 head_lbl2 = Label(root, text="Please select your numbers", font="bold", bg="yellow").place(x=380, y=70)
-
 # Your number selection
 entry1 = Entry(root, text="", bg="blue", justify="center", font=(70))
 entry1.place(x=50, y=140, width="80", height="80")
@@ -29,43 +28,12 @@ entry6 = Entry(root, text="", bg="light green", justify="center", font=(70))
 entry6.place(x=550, y=140, width="80", height="80")
 
 
-# defined all entries under 1 button , all functions of confirm button
-def confirm():
-    try:
-        int(entry1.get())
-    except ValueError:
-        messagebox.showerror(message="That is not a number, make sure all entries are filled")
 
 def confirm():
-    try:
-        int(entry2.get())
-    except ValueError:
-        messagebox.showerror(message="That is not a number, make sure all entries are filled")
-
-def confirm():
-    try:
-        int(entry3.get())
-    except ValueError:
-        messagebox.showerror(message="That is not a number, make sure all entries are filled")
-
-def confirm():
-    try:
-        int(entry4.get())
-    except ValueError:
-        messagebox.showerror(message="That is not a number or you are missing a number")
-
-def confirm():
-    try:
-        int(entry5.get())
-    except ValueError:
-        messagebox.showerror(message="That is not a number or you are missing a number")
-
-def confirm():
-    try:
-        int(entry6.get())
-        messagebox.showinfo(message="Numbers Confirmed ;)")
-    except ValueError:
-        messagebox.showerror(message="That is not a number, make sure all entries are filled")
+    ent_list = [int(entry1.get()), int(entry2.get()), int(entry3.get()), int(entry4.get()), int(entry5.get()),
+                int(entry6.get())]
+    ent_list.sort()
+    return ent_list()
 
 
 # Play button
@@ -73,46 +41,45 @@ play_btn = Button(root, text="Confirm Your Numbers", command=confirm, bg="yellow
 
 
 def lotto_no():
-    o = random.randint(1, 49)
-    t = random.randint(1, 49)
-    r = random.randint(1, 49)
-    f = random.randint(1, 49)
-    i = random.randint(1, 49)
-    s = random.randint(1, 49)
-    # assigned values into variables
-    num1.set(o)
-    num2.set(t)
-    num3.set(r)
-    num4.set(f)
-    num5.set(i)
-    num6.set(s)
-    return
+    loto_list = random.sample(range(1, 49), 6)
+    loto_list.sort()
+    myresult.set(loto_list)
+    return loto_list
 
-
-#variables for random draw
-num1 = StringVar()
-num2 = StringVar()
-num3 = StringVar()
-num4 = StringVar()
-num5 = StringVar()
-num6 = StringVar()
 
 var = StringVar()
 var.set("Lotto Draw")
-# winning numbers
-lot_no_ent1 = Entry(root, textvariable=num1, font=(30), justify="center", bg="brown")
-lot_no_ent1.place(x=50, y=280, width="80", height="80")
-lot_no_ent2 = Entry(root, textvariable=num2, font=(30), justify="center", bg="purple")
-lot_no_ent2.place(x=150, y=280, width="80", height="80")
-lot_no_ent3 = Entry(root, textvariable=num3, font=(30), justify="center", bg="pink")
-lot_no_ent3.place(x=250, y=280, width="80", height="80")
-lot_no_ent4 = Entry(root, textvariable=num4, font=(30), justify="center", bg="blue")
-lot_no_ent4.place(x=350, y=280, width="80", height="80")
-lot_no_ent5 = Entry(root, textvariable=num5, font=(30), justify="center", bg="red")
-lot_no_ent5.place(x=450, y=280, width="80", height="80")
-lot_no_ent6 = Entry(root, textvariable=num6, font=(30), justify="center", bg="green")
-lot_no_ent6.place(x=550, y=280, width="80", height="80")
 
+
+def compareLists():
+    randoms = lotto_no()
+    entr_no = confirm()
+    result = set(randoms).intersection(set(entr_no))
+    return result
+def prizemoney():
+    prize_mny = {6: "10,000,000", 5: "8,584", 4: "2,384", 3: "100.50", 2: "20"}
+    mykey=len(compareLists())
+    x = {prize_mny.get(mykey)}
+    messagebox.showinfo("you've won", x)
+"""
+# winning numbers
+lot_no_ent1 = Entry(root, textvariable=num1, font=30, justify="center", bg="brown")
+lot_no_ent1.place(x=50, y=280, width="80", height="80")
+lot_no_ent2 = Entry(root, textvariable=num2, font=30, justify="center", bg="purple")
+lot_no_ent2.place(x=150, y=280, width="80", height="80")
+lot_no_ent3 = Entry(root, textvariable=num3, font=30, justify="center", bg="pink")
+lot_no_ent3.place(x=250, y=280, width="80", height="80")
+lot_no_ent4 = Entry(root, textvariable=num4, font=30, justify="center", bg="blue")
+lot_no_ent4.place(x=350, y=280, width="80", height="80")
+lot_no_ent5 = Entry(root, textvariable=num5, font=30, justify="center", bg="red")
+lot_no_ent5.place(x=450, y=280, width="80", height="80")
+lot_no_ent6 = Entry(root, textvariable=num6, font=30, justify="center", bg="green")
+lot_no_ent6.place(x=550, y=280, width="80", height="80")
+"""
+
+myresult=StringVar()
+my_lotto_num = Label(root, text=" ", textvariable=myresult, bg="yellow", bd=5)
+my_lotto_num.place(x=240, y=300)
 # Random numbers button
 win_btn = Button(root, text="Generate winning numbers", command=lotto_no, bg="yellow", bd=5)
 win_btn.place(x=240, y=370)
@@ -133,39 +100,39 @@ lbl_1 = Label(root, text="1 correct numbers -     R0", font="40", bg="yellow")
 lbl_1.place(x=50, y=565)
 lbl_0 = Label(root, text="0 correct numbers -     R0", font="40", bg="yellow")
 lbl_0.place(x=50, y=585)
-# Your total amount gained
-lbl_ttl = Label(root, text="Total amount won: ", font="40", bg="yellow")
-lbl_ttl.place(x=50, y=625)
-ent_ttl = Entry(root, bg="yellow" , text="converted amount")
-ent_ttl.place(x=240, y=645)
+
 
 # currency converter
 def convert():
     pass
 
+
 amount_ent = Entry(root, text="R", bg="yellow")
-amount_ent.place(x=240, y=625)
+amount_ent.place(x=240, y=645)
 # convert button
-convert_btn = Button(root, text="convert to :", command=convert)
+convert_btn = Button(root, text="convert to :", command=convert).place()
 # exit button
-button_exit = Button(text="X", command="exit" , bg="red")
+button_exit = Button(text="X", command="exit", bg="red")
 button_exit.place(x=650, y=0, width=50, height=40)
+
+
 # play again button
 def play():
-   entry1.delete(0, END)
-   entry2.delete(0, END)
-   entry3.delete(0, END)
-   entry4.delete(0, END)
-   entry5.delete(0, END)
-   entry6.delete(0, END)
-   lot_no_ent6.delete(0, END)
-   lot_no_ent2.delete(0, END)
-   lot_no_ent3.delete(0, END)
-   lot_no_ent4.delete(0, END)
-   lot_no_ent5.delete(0, END)
-   lot_no_ent1.delete(0, END)
+    entry1.delete(0, END)
+    entry2.delete(0, END)
+    entry3.delete(0, END)
+    entry4.delete(0, END)
+    entry5.delete(0, END)
+    entry6.delete(0, END)
+    (0, END)
 
-play_ag_btn = Button(root, text="Play Again", command=play, bg="yellow", bd=5).place(x=145, y=230)
 
+play_ag_btn = Button(root, text="clear", command=play, bg="yellow", bd=5).place(x=145, y=230)
+
+# Your total amount gained
+lbl_ttl = Label(root, text="Total amount won: ", font="40", bg="yellow")
+lbl_ttl.place(x=50, y=625)
+lbl_ttl2 = Label(root, bg="yellow", text="")
+lbl_ttl2.place(x=240, y=625)
 
 root.mainloop()
