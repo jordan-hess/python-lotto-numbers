@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 
+
 root = Tk()
 root.title("Banking Details")
 root.config(bg="yellow")

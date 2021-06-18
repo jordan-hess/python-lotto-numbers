@@ -1,62 +1,58 @@
 from tkinter import *
 from tkinter import messagebox
+import csv
 
+# window configuration
 window = Tk()
+window.configure(bg="yellow")
+window.title("Lotto Draw: Jordan Hess")
+window.geometry("400x400")
 
-name = ("Jordan Hess", "Zoe Erispe", "Jayden May", "Yumkela", "Godwin", "Austin Powers" )
-email = ("jchno116012003@gmail.com", "zoeerispe7@gmail.com", "jaydenmay040@gmail.com", "yummykela@gmail.com" , "godwin.lifechoices.co.zo", "areyouhornybaby@gmail.com" )
-ID_number = ("0301165062086")
+# Email
+eml_lbl = Label(window, text="Enter your Email: ").place(x=50, y=100)
+eml_ent= Entry(window, textvariable=eml_lbl).place(x=180, y=100)
 
+# Password
+passw_lbl = Label(window, text="Enter you password: ").place(x=50, y=150)
+passw_ent = Entry(window, text="", textvariable=passw_lbl).place(x=180, y=150)
 
-class Login:
-    def __init__(self, window):
-        # window configuration
-        self.window = window
-        self.window.configure(bg="yellow")
-        self.window.title("Lotto Draw: Jordan Hess")
-        self.window.geometry("400x400")
+def txt_fle():
+    with open("user-txt") as file:
+        file_reader = csv.reader(file)
+        email_finder(file_reader)
+        file.close()
 
-        # Name Input
-        self.lablenm = Label(window, text=" Full Name: ", bg="yellow")
-        self.lablenm.pack()
-        self.entrynm = Entry(window, textvariable=name)
-        self.entrynm.pack()
-        # Email input
-        self.lableem = Label(window, text="Email: ", bg="yellow")
-        self.lableem.pack()
-        self.entryem = Entry(window, textvariable=email )
-        self.entryem.pack()
-        # Address input
-        self.lableadd = Label(window, text="Address: ", bg="yellow")
-        self.lableadd.pack()
-        self.entryadd = Entry(window, text="", )
-        self.entryadd.pack()
-        # ID input
-        self.lableid = Label(window, text="ID Number: ", bg="yellow")
-        self.lableid.pack()
-        self.entryid = Entry(window, textvariable=ID_number )
-        self.entryid.pack()
-
+eml_ent = StringVar
+passw_ent = StringVar
 
 # Submit button
+def email_finder(file):
+    for row in file:
+        if row[0] == eml_ent:
+            messagebox.showerror("Email not found")
+            email_list = [row[0], row[1], row[2]]
+            pass_check(email_list)
+            break
+        else:
+            messagebox.showerror("Email not found")
+
+def pass_check(email_list):
+    if email_list[1] == passw_ent:
+        messagebox.showinfo("password match")
+    else:
+        messagebox.showerror("password does not match")
+
 def submit():
-    if name == name:
-        pass
-
-    if email == email:
-        pass
-    else:
-        messagebox.showinfo("Incorrect Email")
-
-    if ID_number == ID_number:
-        pass
-    else:
-        messagebox.showinfo("Incorrect Password")
+        if eml_ent.get() == email_finder and passw_ent.get() == pass_check:
+            messagebox.showinfo("welocome")
+        else:
+            messagebox.showerror("email not recognised")
 
 
-sub_btn = Button(window, text="Submit" , width="10", command=submit)
+
+sub_btn = Button(window, text="Submit", width="10", command=submit)
 sub_btn.pack()
 
 
-log = Login(window)
+
 window.mainloop()
