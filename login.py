@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import csv
 
+
 # window configuration
 window = Tk()
 window.configure(bg="yellow")
@@ -22,32 +23,31 @@ def txt_fle():
         email_finder(file_reader)
         file.close()
 
-eml_ent = StringVar
-passw_ent = StringVar
+eml_ent = StringVar()
+passw_ent = StringVar()
 
 # Submit button
 def email_finder(file):
     for row in file:
         if row[0] == eml_ent:
-            messagebox.showerror("Email not found")
-            email_list = [row[0], row[1], row[2]]
+            messagebox.showerror(message="Email not found")
+            email_list = [row[0], row[1]]
             pass_check(email_list)
             break
         else:
-            messagebox.showerror("Email not found")
+            messagebox.showerror(message="Email not found")
 
 def pass_check(email_list):
     if email_list[1] == passw_ent:
-        messagebox.showinfo("password match")
+        messagebox.showinfo(message="password match")
     else:
-        messagebox.showerror("password does not match")
+        messagebox.showerror(message="password does not match")
 
 def submit():
         if eml_ent.get() == email_finder and passw_ent.get() == pass_check:
-            messagebox.showinfo("welocome")
+            messagebox.showinfo(message="welocome")
         else:
-            messagebox.showerror("email not recognised")
-
+            messagebox.showerror(message="email not recognised")
 
 
 sub_btn = Button(window, text="Submit", width="10", command=submit)
