@@ -25,7 +25,7 @@ def send_message():
 
     server.login(sender_email, sender_password)
 
-    print("Login successful")
+    messagebox.showinfo(message="Email successfully sent")
 
     server.sendmail(sender_email, address_info, email_body_info)
 

@@ -2,9 +2,7 @@ from playsound import playsound
 from tkinter import *
 from tkinter import messagebox
 import random
-import requests
-import tkinter as tk
-from tkinter import ttk
+
 
 root = Tk()
 
@@ -39,9 +37,13 @@ def confirm():
         ent_list = [int(entry1.get()), int(entry2.get()), int(entry3.get()), int(entry4.get()), int(entry5.get()),
                     int(entry6.get())]
         ent_list.sort()
-        return ent_list
+        if len() > 49 or len() < 1:
+            messagebox.showerror(message="All numbers should be in the range of 49")
+        else:
+            return ent_list
+
     except ValueError:
-        messagebox.showinfo(message="Fill in all entries")
+        messagebox.showinfo(message="Fill in all entries with numbers")
 
 
 def lotto_no():
@@ -56,27 +58,32 @@ def prizemoney():
     y = confirm()
     result = set(x).intersection(set(y))
     prize_mny = {6: "R10,000,000", 5: "R8,584", 4: "R2,384", 3: "R100.50", 2: "R20", 1: "R0", 0: "R0"}
-    def claim():
-        root.destroy()
-        import banking_details
-
-        # claim button
-        claim_btn = Button(root, text="Claims", command=claim).place(x=200, y=200)
+    lost = {1: "R0"}
+    noth = {0: "0"}
+    myloss = len(result)
     mykey = len(result)
+    nothing = len(result)
+    xy = {lost.get(myloss)}
     x = {prize_mny.get(mykey)}
-    if x == 0 or 1:
+    xyz = {noth.get(nothing)}
+    if result == xy:
         playsound('sad_trombone_gaming_sound_effect_hd_mp3_32171.mp3')
+        messagebox.showinfo(message="You got 1 match dont give up")
+    elif result == xyz:
+        playsound('sad_trombone_gaming_sound_effect_hd_mp3_32171.mp3')
+        messagebox.showinfo(message="unlucky draw")
+
     else:
         playsound('ka-ching_sound_effect_mp3_32039.mp3')
-    messagebox.showinfo("you've won", x)
+        messagebox.showinfo("you've won", x)
 
 
 
 
 x = StringVar
 myresult = StringVar()
-my_lotto_num = Label(root, text=" ", textvariable=myresult, bg="yellow", borderwidth=3, font="70").place(x=240, y=340)
-
+my_lotto_num = Label(root, text=" ", textvariable=myresult, bg="yellow", font="70").place(x=240, y=340)
+loto_num_lbl = Label(root, text="Lotto Numbers: ", bg="yellow", font="70").place(x=90,y=340)
 
 # winnings area
 lbl_money = Label(root, text="Dividends: ", font="40", bg="yellow")
@@ -97,82 +104,6 @@ lbl_0 = Label(root, text="0 correct numbers -     R0", font="40", bg="yellow")
 lbl_0.place(x=50, y=585)
 
 
-# currency converter
-class my_currency_converter():
-    def __init__(self, url):
-        self.data = requests.get(url).json()
-        self.currencies = self.data['rates']
-
-    def convert(self, from_currency, to_currency, amount):
-        initial_amount = amount
-        if from_currency != 'USD':
-            amount = amount / self.currencies[from_currency]
-
-            # limiting the precision to 4 decimal places
-        amount = round(amount * self.currencies[to_currency], 2)
-        return amount
-
-
-class App(tk.Tk):
-
-    def __init__(self, converter):
-        tk.Tk.__init__(self)
-        self.title = ('Currency Converter')
-        self.currency_converter = converter
-
-        self.geometry("300x300")
-        self.configure(bg="yellow")
-
-        # Label
-        self.intro_label = Label(self, text='Currency Convertor', bg='yellow')
-        self.intro_label.config()
-
-        self.intro_label.place(x=35, y=5)
-
-        # Entry box
-        self.amount_field = Entry(self, validate='key')
-        self.converted_amount_field_label = Label(self, text='')
-
-        # dropdown
-        self.from_currency_variable = StringVar(self)
-        self.from_currency_variable.set("ZAR")
-        self.to_currency_variable = StringVar(self)
-        self.to_currency_variable.set("USD")
-
-        self.from_currency_dropdown = Label(self, text="ZAR", bg="yellow")
-        self.to_currency_dropdown = ttk.Combobox(self, textvariable=self.to_currency_variable,
-                                                 values=list(self.currency_converter.currencies.keys()))
-
-        # placing
-        self.from_currency_dropdown.place(x=50, y=100)
-        self.amount_field.place(x=90, y=100)
-        self.to_currency_dropdown.place(x=30, y=130, width="50")
-        self.converted_amount_field_label.place(x=90, y=130, width="125")
-        self.intro_label.place(x=100, y=50)
-
-        # Convert button for converter
-        self.convert_button = Button(self, text="Convert", command=self.perform)
-        self.convert_button.place(x=120, y=195)
-
-        # Exit button
-        button_exit = Button(self, text="X", command="exit")
-        button_exit.place(x=280, y=0)
-
-    def perform(self):
-        amount = float(self.amount_field.get())
-        from_curr = self.from_currency_variable.get()
-        to_curr = self.to_currency_variable.get()
-
-        converted_amount = self.currency_converter.convert(from_curr, to_curr, amount)
-        converted_amount = round(converted_amount, 2)
-
-        self.converted_amount_field_label.config(text=str(converted_amount))
-
-
-if __name__ == '__main__':
-    url = 'https://api.exchangerate-api.com/v4/latest/USD'
-    converter = my_currency_converter(url)
-    App(converter)
 
 # convert button
 # exit button
@@ -187,12 +118,23 @@ def play():
     entry4.delete(0, END)
     entry5.delete(0, END)
     entry6.delete(0, END)
-    (0, END)
+
+def claim():
+    playsound("windows_10_system_generic_notification_sound_mp3_44661.mp3")
+    root.destroy()
+    import banking_details
+
+def openconvert():
+    playsound("windows_10_system_generic_notification_sound_mp3_44661.mp3")
+    root.destroy()
+    import converter
 
 
 play_ag_btn = Button(root, text="clear", command=play, bg="yellow", bd=5).place(x=145, y=230)
 
 # Play button
 play_btn1 = Button(root, text="Check Results", command=prizemoney, bg="yellow", bd=5).place(x=500, y=230)
+claim_btn = Button(root, text="Claim winnings", command=claim, bg="yellow").place(x=300, y=600)
+convert_btn = Button(root, text="convert winnings",command=openconvert, bg="yellow").place(x=440, y=600)
 
 root.mainloop()

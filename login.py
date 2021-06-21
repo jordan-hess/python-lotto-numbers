@@ -2,8 +2,10 @@ import datetime
 from tkinter import *
 from dateutil import relativedelta
 import rsaidnumber
+from playsound import playsound
 
 root = Tk()
+root.title("Login")
 from tkinter import messagebox
 
 # usernames and passwords
@@ -31,17 +33,19 @@ def login():
         if User == Passw == Id_num:
             frame3.grid_forget()
             frame5.grid_forget()
-            messagebox.showinfo(message="Welcome!")
+            playsound("windows_10_system_generic_notification_sound_mp3_44661.mp3")
         elif relativedelta.relativedelta(datetime.datetime.today(), birthDay).years >= 18:
             messagebox.showinfo(message="welcome")
+            playsound("windows_10_system_generic_notification_sound_mp3_44661.mp3")
             root.destroy()
             import lotto
         else:
             messagebox.showerror(message="you are not old enough to play")
+            playsound("windows_10_system_generic_notification_sound_mp3_44661.mp3")
 
     else:
-        messagebox.showerror(message="password or username is invalid")
-        root.destroy()
+        messagebox.showerror(message="password or username is invalid, try again")
+        playsound("windows_10_system_generic_notification_sound_mp3_44661.mp3")
 
 
 loginLabelUser = Label(frame3, text="Log in:", bg="yellow")
