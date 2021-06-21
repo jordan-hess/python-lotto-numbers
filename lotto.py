@@ -1,3 +1,4 @@
+from playsound import playsound
 from tkinter import *
 from tkinter import messagebox
 import random
@@ -6,6 +7,7 @@ import tkinter as tk
 from tkinter import ttk
 
 root = Tk()
+
 root.title("Lotto Draw")
 root.config(bg="yellow")
 root.geometry("700x700")
@@ -32,7 +34,6 @@ entry6 = Entry(root, text="", bg="light green", justify="center", font=(70))
 entry6.place(x=550, y=140, width="80", height="80")
 
 
-
 def confirm():
     try:
         ent_list = [int(entry1.get()), int(entry2.get()), int(entry3.get()), int(entry4.get()), int(entry5.get()),
@@ -51,21 +52,31 @@ def lotto_no():
 
 
 def prizemoney():
-    x=lotto_no()
-    y=confirm()
+    x = lotto_no()
+    y = confirm()
     result = set(x).intersection(set(y))
-    prize_mny = {6: "10,000,000", 5: "8,584", 4: "2,384", 3: "100.50", 2: "20"}
+    prize_mny = {6: "R10,000,000", 5: "R8,584", 4: "R2,384", 3: "R100.50", 2: "R20", 1: "R0", 0: "R0"}
+    def claim():
+        root.destroy()
+        import banking_details
+
+        # claim button
+        claim_btn = Button(root, text="Claims", command=claim).place(x=200, y=200)
     mykey = len(result)
     x = {prize_mny.get(mykey)}
+    if x == 0 or 1:
+        playsound('sad_trombone_gaming_sound_effect_hd_mp3_32171.mp3')
+    else:
+        playsound('ka-ching_sound_effect_mp3_32039.mp3')
     messagebox.showinfo("you've won", x)
+
+
+
 
 x = StringVar
 myresult = StringVar()
-my_lotto_num = Label(root, text=" ", textvariable=myresult, bg="yellow", bd=5 ,  borderwidth=3).place(x=240, y=300)
-lbl_totl = Label(root, textvariable=x, bg="black").place(x=350, y=500)
-# Random numbers button
-win_btn = Button(root, text="Generate winning numbers", command=lotto_no, bg="yellow", bd=5)
-win_btn.place(x=240, y=370)
+my_lotto_num = Label(root, text=" ", textvariable=myresult, bg="yellow", borderwidth=3, font="70").place(x=240, y=340)
+
 
 # winnings area
 lbl_money = Label(root, text="Dividends: ", font="40", bg="yellow")
@@ -98,7 +109,7 @@ class my_currency_converter():
             amount = amount / self.currencies[from_currency]
 
             # limiting the precision to 4 decimal places
-        amount = round(amount * self.currencies[to_currency], 4)
+        amount = round(amount * self.currencies[to_currency], 2)
         return amount
 
 
@@ -109,18 +120,14 @@ class App(tk.Tk):
         self.title = ('Currency Converter')
         self.currency_converter = converter
 
-        self.geometry("600x300")
-        self.configure(bg="blue")
+        self.geometry("300x300")
+        self.configure(bg="yellow")
 
         # Label
-        self.intro_label = Label(self, text='Currency Convertor', fg='blue', relief=tk.RAISED,
-                                 justify=tk.CENTER, borderwidth=3)
+        self.intro_label = Label(self, text='Currency Convertor', bg='yellow')
         self.intro_label.config()
 
-
-
-        self.intro_label.place(x=40, y=5)
-
+        self.intro_label.place(x=35, y=5)
 
         # Entry box
         self.amount_field = Entry(self, validate='key')
@@ -128,29 +135,28 @@ class App(tk.Tk):
 
         # dropdown
         self.from_currency_variable = StringVar(self)
-        self.from_currency_variable.set("INR")  # default value
+        self.from_currency_variable.set("ZAR")
         self.to_currency_variable = StringVar(self)
-        self.to_currency_variable.set("USD")  # default value
+        self.to_currency_variable.set("USD")
 
-
-        self.from_currency_dropdown = Label(self, text="ZAR")
-        self.to_currency_dropdown = ttk.Combobox(self, textvariable=self.to_currency_variable,values=list(self.currency_converter.currencies.keys()))
+        self.from_currency_dropdown = Label(self, text="ZAR", bg="yellow")
+        self.to_currency_dropdown = ttk.Combobox(self, textvariable=self.to_currency_variable,
+                                                 values=list(self.currency_converter.currencies.keys()))
 
         # placing
-        self.from_currency_dropdown.place(x=30, y=120)
-        self.amount_field.place(x=30, y=150)
-        self.to_currency_dropdown.place(x=340, y=120)
-        self.converted_amount_field_label.place(x=340, y=150)
-        self.intro_label.place(x=250 , y=0)
+        self.from_currency_dropdown.place(x=50, y=100)
+        self.amount_field.place(x=90, y=100)
+        self.to_currency_dropdown.place(x=30, y=130, width="50")
+        self.converted_amount_field_label.place(x=90, y=130, width="125")
+        self.intro_label.place(x=100, y=50)
 
         # Convert button for converter
-        self.convert_button = Button(self, text="Convert", fg="black", command=self.perform)
-        self.convert_button.config(font=('Manrope', 12, 'bold'))
-        self.convert_button.place(x=225, y=135)
+        self.convert_button = Button(self, text="Convert", command=self.perform)
+        self.convert_button.place(x=120, y=195)
 
         # Exit button
-        button_exit = Button(self,text="X", command="exit")
-        button_exit.place(x=565, y=0)
+        button_exit = Button(self, text="X", command="exit")
+        button_exit.place(x=280, y=0)
 
     def perform(self):
         amount = float(self.amount_field.get())
@@ -162,6 +168,7 @@ class App(tk.Tk):
 
         self.converted_amount_field_label.config(text=str(converted_amount))
 
+
 if __name__ == '__main__':
     url = 'https://api.exchangerate-api.com/v4/latest/USD'
     converter = my_currency_converter(url)
@@ -169,7 +176,8 @@ if __name__ == '__main__':
 
 # convert button
 # exit button
-button_exit = Button(root,text="X", command="exit", bg="red").place(x=650, y=0, width=50, height=40)
+button_exit = Button(root, text="X", command="exit", bg="red").place(x=650, y=0, width=50, height=40)
+
 
 # play again button
 def play():
@@ -184,13 +192,7 @@ def play():
 
 play_ag_btn = Button(root, text="clear", command=play, bg="yellow", bd=5).place(x=145, y=230)
 
-# Your total amount gained
-lbl_ttl = Label(root, text="Total amount won: ", font="40", bg="yellow")
-lbl_ttl.place(x=50, y=625)
-lbl_ttl2 = Label(root, bg="yellow", text="")
-lbl_ttl2.place(x=240, y=625)
 # Play button
 play_btn1 = Button(root, text="Check Results", command=prizemoney, bg="yellow", bd=5).place(x=500, y=230)
-
 
 root.mainloop()
